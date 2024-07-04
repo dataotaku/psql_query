@@ -152,3 +152,13 @@ left join game_purchases b on a.user_id = b.user_id
 where a.country in ('United States', 'Canada')
 group by 1
 ;
+
+select id_bioguide, term_start
+,lag(term_start) over (partition by id_bioguide 
+ 					   order by term_start) as prev
+,age(term_start,
+	 lag(term_start) over (partition by id_bioguide
+	 					   order by term_start)) as gap_interval
+from legislators_terms 
+where term_type = 'rep'
+;
