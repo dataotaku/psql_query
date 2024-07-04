@@ -162,3 +162,12 @@ select id_bioguide, term_start
 from legislators_terms 
 where term_type = 'rep'
 ;
+
+select coalesce (platform, 'All') as platform
+,coalesce (genre, 'All') as genre
+,coalesce (publisher, 'All') as publisher
+,sum(global_sales) as global_sales
+from videogame_sales 
+group by cube (platform, genre, publisher)
+order by 1,2,3
+;
