@@ -171,3 +171,40 @@ from videogame_sales
 group by cube (platform, genre, publisher)
 order by 1,2,3
 ;
+
+
+SELECT count(a.user_id) as all_users
+,count(b.user_id) as step_one_users
+,count(b.user_id) / count(a.user_id) as pct_step_one
+,count(c.user_id) as step_two_users
+,count(c.user_id) / count(b.user_id) as pct_one_to_two
+FROM users a
+LEFT JOIN step_one b on a.user_id = b.user_id
+LEFT JOIN step_two c on b.user_id = c.user_id
+;
+
+select coalesce (platform, 'All') as platform
+,coalesce (genre, 'All') as genre
+,coalesce (publisher, 'All') as publisher
+,sum(global_sales) as global_sales
+from videogame_sales 
+group by rollup (platform, genre, publisher)
+order by 1,2,3
+;
+
+select 
+case when b.rank <= 5 then a.state
+	 else 'Other' end as state_group
+,count(distinct id_bioguide) as legislators
+from legislators_terms a
+join
+(
+	select state 
+	,count(distinct id_bioguide)
+	,rank() over (order by count(distinct id_bioguide) desc)
+	from legislators_terms 
+	group by 1
+) b on a.state = b.state
+group by 1
+order by 2 desc
+;
