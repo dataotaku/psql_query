@@ -4,8 +4,6 @@ group by 1
 order by 1
 ;
 
-
-
 select left(sighting_report, 8) as left_digits
 ,count(*)
 from ufo

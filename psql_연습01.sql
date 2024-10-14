@@ -1,7 +1,3 @@
-select * 
-from retail_sales 
-order by sales_month desc 
-limit 100;
 
 select current_timestamp;
 
