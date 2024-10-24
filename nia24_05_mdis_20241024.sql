@@ -22,6 +22,10 @@ where 전입연도 = '2023' and 전입월 = '12';
 select count(*)
 from 통계청mdis_국내인구이동;
 
+
+select count(*)
+from 통계청mdis_국내인구이동;
+
 select 전입연도
      , 전입월
      , 전입행정구역_시도코드

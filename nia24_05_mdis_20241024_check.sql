@@ -22,6 +22,88 @@ where 전입연도 = '2023' and 전입월 = '12';
 select count(*)
 from 통계청mdis_국내인구이동;
 
+select min(세대uid), max(세대uid)
+from uhc_국내이동_인구_all2
+limit 100;
+
+create table uhc_2023_인구체크2 as
+WITH numbered_2023 AS (
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY 전입연도, 전입월, 전입일) AS 행번호
+      , 전입연도
+	  , 전입월
+	  , 전입일
+	  , 전입행정구역_시도코드
+	  , 전입행정구역_시군구코드
+	  , 전입행정구역_읍면동코드
+	  , 전출행정구역_시도코드
+	  , 전출행정구역_시군구코드
+	  , 전출행정구역_읍면동코드
+	  , 전입사유코드
+	  , 전입자1_세대주관계코드
+	  , 전입자1_만연령
+	  , 전입자1_성별코드
+	  , 전입자2_세대주관계코드
+	  , 전입자2_만연령
+	  , 전입자2_성별코드
+	  , 전입자3_세대주관계코드
+	  , 전입자3_만연령
+	  , 전입자3_성별코드
+	  , 전입자4_세대주관계코드
+	  , 전입자4_만연령
+	  , 전입자4_성별코드
+	  , 전입자5_세대주관계코드
+	  , 전입자5_만연령
+	  , 전입자5_성별코드
+	  , 전입자6_세대주관계코드
+	  , 전입자6_만연령
+	  , 전입자6_성별코드
+	  , 전입자7_세대주관계코드
+	  , 전입자7_만연령
+	  , 전입자7_성별코드
+	  , 전입자8_세대주관계코드
+	  , 전입자8_만연령
+	  , 전입자8_성별코드
+	  , 전입자9_세대주관계코드
+	  , 전입자9_만연령
+	  , 전입자9_성별코드
+	  , 전입자10_세대주관계코드
+	  , 전입자10_만연령
+	  , 전입자10_성별코드
+    from 통계청mdis_국내인구이동
+    where 전입연도 = '2023' 
+)
+select 전입연도
+    , count(distinct 행번호) as 전입세대수
+	, sum(case when 전입자1_만연령 is not null then 1 else 0 end) as 전입자1_연령
+	, sum(case when 전입자2_만연령 is not null then 1 else 0 end) as 전입자2_연령
+	, sum(case when 전입자3_만연령 is not null then 1 else 0 end) as 전입자3_연령
+	, sum(case when 전입자4_만연령 is not null then 1 else 0 end) as 전입자4_연령
+	, sum(case when 전입자5_만연령 is not null then 1 else 0 end) as 전입자5_연령
+	, sum(case when 전입자6_만연령 is not null then 1 else 0 end) as 전입자6_연령
+	, sum(case when 전입자7_만연령 is not null then 1 else 0 end) as 전입자7_연령
+	, sum(case when 전입자8_만연령 is not null then 1 else 0 end) as 전입자8_연령
+	, sum(case when 전입자9_만연령 is not null then 1 else 0 end) as 전입자9_연령
+	, sum(case when 전입자10_만연령 is not null then 1 else 0 end) as 전입자10_연령
+from numbered_2023
+group by 전입연도;
+
+
+select count(*)
+from uhc_국내이동_인구_all2
+where 전입연도 = '2023';
+
+
+select 전입자1_연령 + 전입자2_연령 + 
+전입자3_연령 + 전입자4_연령 + 전입자5_연령 + 전입자6_연령 +  
+전입자7_연령 + 전입자8_연령 + 
+전입자9_연령 + 전입자10_연령 as total_sum
+from uhc_2023_인구체크2;
+
+select *
+from uhc_2023_인구체크2;
+
+
 select 전입연도
      , 전입월
      , 전입행정구역_시도코드
