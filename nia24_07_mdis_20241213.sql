@@ -1403,3 +1403,8 @@ from uhc_sgg_연간전출_단독_비단독_세대_인구2;
 
 select *
 from uhc_sgg_연간전입_단독_비단독_세대_인구2;
+
+
+
+select *
+from uhc_mdis_sgg_final;
